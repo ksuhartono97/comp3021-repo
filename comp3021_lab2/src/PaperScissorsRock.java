@@ -1,7 +1,7 @@
 import java.util.Random;
 import java.util.Scanner;
 
-public class Game {
+public class PaperScissorsRock {
     private static int ROCK = 0, PAPER = 1, SCISSORS = 2; // 0/1/2 to represent ROCK/PAPER/SCISSORS
     private static int turn = 0; // the number of the current game
     private static int cResult = 0; // how many turns did computer wins
