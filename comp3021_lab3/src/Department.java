@@ -15,13 +15,13 @@ public class Department {
         return name;
     }
 
-    boolean createNewStudent (int id, int year, int month, int day, String name) {
+    public boolean createNewStudent (int id, int year, int month, int day, String name) {
         BirthDate newBirthDate = new BirthDate(year, month, day);
         Student newStudent = new Student(newBirthDate, id, name);
         return insertStudent(newStudent);
     }
 
-    boolean insertStudent(Student student) {
+    private boolean insertStudent(Student student) {
         for(Student element : this.students) {
             if(element != null && element.getId() == student.getId()) {
                 System.out.println("Creating member " + student.getName() + " failed");
