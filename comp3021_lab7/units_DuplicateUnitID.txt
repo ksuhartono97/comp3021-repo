@@ -1,0 +1,3 @@
+2
+A Infantry 1 2
+A Cavalry 2 3
