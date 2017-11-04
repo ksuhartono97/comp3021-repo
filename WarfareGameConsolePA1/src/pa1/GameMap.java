@@ -98,26 +98,13 @@ public class GameMap
 	{
 		int movementDistance = Math.abs(locationXOld - locationXNew) + Math.abs(locationYOld - locationYNew);
 
-//		int bfsX = locationXOld;
-//		int bfsY = locationYOld;
-//		ArrayList<Integer> xLocationQueue = new ArrayList<>();
-//		ArrayList<Integer> yLocationQueue = new ArrayList<>();
-//
-//		xLocationQueue.add(bfsX);
-//		xLocationQueue.add(bfsX+1);
-//		xLocationQueue.add(bfsX);
-//		xLocationQueue.add(bfsX-1);
-//		yLocationQueue.add(bfsY+1);
-//		yLocationQueue.add(bfsY);
-//		yLocationQueue.add(bfsY-1);
-//		yLocationQueue.add(bfsY);
-
+		BreadthFirstSearch bfs = new BreadthFirstSearch(terrainMap, movementRange, locationXOld, locationYOld, locationXNew, locationYNew, width, height);
 
 		if(locationXNew <= 0 && locationYNew <= 0 && locationXNew > width && locationYNew > height) {
 			System.err.println("Target Location outside of Game Map Boundary.");
 			return false;
 		}
-		else if(movementDistance > movementRange) {
+		else if(!bfs.bfs()) {
 			System.err.println("Outside of Movement Range.");
 			return false;
 		}
