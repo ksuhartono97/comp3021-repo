@@ -1,0 +1,1 @@
+The bonus feature suggested has been implemented through the addition of the BreadthFirstSearch class that is implementing BFS to search the neighbours of the node and check whether the move is possible.
