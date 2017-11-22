@@ -1,0 +1,10 @@
+2
+Red 4
+A Infantry
+B Infantry
+C Cavalry
+D Cavalry
+Blue 3
+X Pikeman
+Y Pikeman
+Z Archer
