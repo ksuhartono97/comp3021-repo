@@ -3,6 +3,7 @@ package pa1;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Random;
 
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -16,6 +17,7 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.scene.layout.BorderPane;
@@ -88,6 +90,7 @@ public class GameApplication extends Application
 	private Button btGamePlayQuitToMenu;
 	private Label lbCurrentTurn, lbGamePlayInfo;
 	private ObservableList<VBox> listViewGamePlayUnitInfoItems = FXCollections.observableArrayList();
+	private StackPane sp;
 
 	// Part 4: paneGameOver
 	private Label lbGameOver;
@@ -129,7 +132,23 @@ public class GameApplication extends Application
 	// You need to have BorderPane, VBox, Label and 3 Buttons.
 	private Pane paneWelcome() 
 	{
-		
+		BorderPane pane = new BorderPane();
+		VBox container = new VBox(20);
+
+		Label lbMenuTitle = new Label("Java Warfare Game");
+		btNewGame = new Button("New Game");
+		btQuit = new Button("Quit");
+		btBackgroundMusic = new Button("Enable Background Music");
+
+		lbMenuTitle.getStyleClass().add("menu-title");
+		btNewGame.getStyleClass().add("menu-button");
+		btQuit.getStyleClass().add("menu-button");
+		btBackgroundMusic.getStyleClass().add("menu-button");
+
+		container.getChildren().addAll(lbMenuTitle, btNewGame, btBackgroundMusic, btQuit);
+		container.setAlignment(Pos.CENTER);
+		pane.setCenter(container);
+		return pane;
 	}
 
 	// TODO: Create a pane for scene "GameStart".
@@ -140,7 +159,40 @@ public class GameApplication extends Application
 	// Suggestion: Set the size of Canvas based on RESOLUTION_GAMEPLAY_WIDTH/HEIGHT.
 	private Pane paneStartGame() 
 	{
-		
+		BorderPane pane = new BorderPane();
+		VBox leftContainer = new VBox(20);
+		leftContainer.setPadding(new Insets(10, 10, 10, 10));
+		VBox rightContainer = new VBox(20);
+		rightContainer.setPadding(new Insets(10, 10, 10, 10));
+
+		btLoadTerrainMap = new Button("Load Map");
+		lbMapPosition = new Label("");
+		btLoadPlayersAndUnits = new Button("Load Units");
+		Label lbUnits = new Label("Units");
+		listViewUnit = new ListView<String>();
+		listViewUnit.setPrefSize(150, 200);
+		listViewUnit.setItems(listViewUnitItems);
+		btStartGame = new Button("Start Game");
+		btQuitToMenu = new Button("Quit to Menu");
+		canvasGameStart = new Canvas();
+		canvasGameStart.setHeight(RESOLUTION_GAMEPLAY_HEIGHT);
+		canvasGameStart.setWidth(RESOLUTION_GAMEPLAY_WIDTH);
+
+		btLoadTerrainMap.getStyleClass().add("menu-button");
+		btLoadPlayersAndUnits.getStyleClass().add("menu-button");
+		btStartGame.getStyleClass().add("menu-button");
+		btQuitToMenu.getStyleClass().add("menu-button");
+
+		leftContainer.getChildren().addAll(btLoadTerrainMap, lbMapPosition, btLoadPlayersAndUnits, lbUnits, listViewUnit, btStartGame, btQuitToMenu);
+		leftContainer.setAlignment(Pos.CENTER);
+
+		rightContainer.getChildren().add(canvasGameStart);
+		rightContainer.setAlignment(Pos.CENTER);
+
+		pane.setLeft(leftContainer);
+		pane.setCenter(rightContainer);
+//		pane.setRight(rightContainer);
+		return pane;
 	}
  
 	// TODO: Create a pane for scene "GamePlay".
@@ -154,9 +206,39 @@ public class GameApplication extends Application
 	// With separate layers, we can focus on only redrawing the things that changed. Don't need to redraw the whole GamePlay graphics.
 	// StackPane is used to stack the Canvases on top of each other with stackPane.getChildren().add(canvas);
 	// StackPane displays like a Stack, the canvas added last will be displayed on top.
-	private Pane paneGamePlay() 
+	private Pane paneGamePlay()
 	{
-		
+		BorderPane pane = new BorderPane();
+		VBox container = new VBox(20);
+		container.setPadding(new Insets(10, 10, 10, 10));
+		for(int i = 0; i<NUM_LAYERS; i++) {
+			canvasGamePlayLayers[i] = new Canvas();
+			canvasGamePlayLayers[i].setHeight(gameMap.getHeight()*TILE_HEIGHT);
+			canvasGamePlayLayers[i].setWidth(gameMap.getWidth()*TILE_WIDTH);
+		}
+		sp= new StackPane();
+		sp.getChildren().addAll(canvasGamePlayLayers[TERRAIN_LAYER], canvasGamePlayLayers[UNIT_LAYER], canvasGamePlayLayers[TEXT_LAYER], canvasGamePlayLayers[RANGE_INDICATOR_LAYER]);
+		sp.setAlignment(Pos.CENTER);
+
+		lbCurrentTurn = new Label("");
+		lbGamePlayInfo = new Label("");
+		btGamePlayQuitToMenu = new Button("Quit Game");
+
+		VBox rightBox = new VBox(10);
+		rightBox.setPadding(new Insets(10, 10, 10, 10));
+		ListView<VBox> listViewGamePlayUnitInfo = new ListView<>();
+//		listViewGamePlayUnitInfo.setPrefSize(100, RESOLUTION_GAMEPLAY_HEIGHT);
+		listViewGamePlayUnitInfo.setItems(listViewGamePlayUnitInfoItems);
+		rightBox.getChildren().add(listViewGamePlayUnitInfo);
+		rightBox.setAlignment(Pos.CENTER);
+
+		container.getChildren().addAll(lbCurrentTurn, lbGamePlayInfo, btGamePlayQuitToMenu);
+		container.setAlignment(Pos.CENTER);
+		pane.setCenter(sp);
+		pane.setRight(rightBox);
+		pane.setBottom(container);
+
+		return pane;
 	}
 
 	// TODO: Create a pane for scene "GameOver".
@@ -165,7 +247,18 @@ public class GameApplication extends Application
 	// It is used to display who is the winner later.
 	private Pane paneGameOver() 
 	{
-		
+		BorderPane pane = new BorderPane();
+		VBox container = new VBox(20);
+
+		lbGameOver = new Label("");
+		btExitToMenu = new Button("Exit to Menu");
+		btGameOverQuitGame = new Button("Quit Game");
+
+		container.getChildren().addAll(lbGameOver, btExitToMenu, btGameOverQuitGame);
+		container.setAlignment(Pos.CENTER);
+		pane.setCenter(container);
+
+		return pane;
 	}
 	
 	
@@ -201,7 +294,13 @@ public class GameApplication extends Application
 	// Call Platform.exit() to exit the game.
 	private void handleExitGame()
 	{
-		
+		Alert alert = new Alert(AlertType.CONFIRMATION, "Do you want to exit this game?", ButtonType.YES, ButtonType.NO);
+		// Show the alert until receiving a click on the buttons
+		alert.showAndWait();
+		// Exit the application if player clicks "Yes"
+		if (alert.getResult() == ButtonType.YES) {
+			Platform.exit();
+		}
 	}
 	
 	// TODO: Load Terrain Map from chosen textfile.
@@ -214,7 +313,36 @@ public class GameApplication extends Application
 	// Also render the new Terrain Map.
 	private void handleLoadMap() 
 	{
-		
+		FileChooser fc = new FileChooser();
+		fc.setTitle("Load Map");
+		fc.getExtensionFilters().addAll(
+				new FileChooser.ExtensionFilter("Text Files", "*.txt")
+		);
+
+		File selectedFile = fc.showOpenDialog(stage);
+
+		if(selectedFile != null) {
+			try {
+				if(gameMap.isLoaded()) {
+					gameMap.unloadTerrainMap();
+				}
+				if(gameEngine.isLoaded()) {
+					for (Player player:gameEngine.getPlayers())
+					{
+						for (Unit unit:player.getUnits())
+						{
+							unit.resetStartingLocation();
+						}
+					}
+					updateListViewUnitItems();
+				}
+				gameMap.loadTerrainMap(selectedFile);
+				renderTerrainMap(canvasGameStart);
+			}
+			catch (IOException e) {
+				showErrorDialog(e.getMessage());
+			}
+		}
 	}
 	
 	// TODO: Load Players and Units from chosen textfile.
@@ -226,7 +354,38 @@ public class GameApplication extends Application
 	// If any Units were placed onto the Terrain Map, remember to reset their starting locations and remove them from canvasGameStart rendering.
 	private void handleLoadPlayersAndUnits() 
 	{
-		
+		FileChooser fc = new FileChooser();
+
+		fc.setTitle("Load Unit");
+
+		fc.getExtensionFilters().addAll(
+				new FileChooser.ExtensionFilter("Text Files", "*.txt")
+		);
+
+		File selectedFile = fc.showOpenDialog(stage);
+
+		if(selectedFile != null) {
+			try {
+				if(gameEngine.isLoaded()) {
+					for (Player player:gameEngine.getPlayers())
+					{
+						for (Unit unit:player.getUnits())
+						{
+//							clearTile(canvasGameStart, unit.getLocationX(), unit.getLocationY());
+							unit.resetStartingLocation();
+						}
+					}
+					gameEngine.unloadPlayersAndUnits();
+				}
+				gameEngine.loadPlayersAndUnits(selectedFile);
+				renderTerrainMap(canvasGameStart);
+			}
+			catch (IOException e){
+				showErrorDialog(e.getMessage()); //Replace?
+			}
+		}
+
+		updateListViewUnitItems();
 	}
 	
 	private void handleGameStartButton() 
@@ -279,7 +438,16 @@ public class GameApplication extends Application
 				Unit selectedUnit = null;
 				// ================================================
 				// TODO: 1) Find the selectedUnit from the Players.
-				
+				for (Player player:gameEngine.getPlayers())
+				{
+					for (Unit unit:player.getUnits())
+					{
+						if (unit.getId() == unitId) {
+							selectedUnit = unit;
+							break;
+						}
+					}
+				}
 				// ================================================
 
 				if (selectedUnit != null)
@@ -289,19 +457,21 @@ public class GameApplication extends Application
 					int terrainMapY = gameMap.canvasToTerrainMapY(canvasY);
 					
 					// TODO 2): Check to make sure that the Terrain Map location is not blocked (by other Unit or by MOVEMENT_COST -1).
-					if () 
+					if (!gameMap.getTerrainAtLocation(terrainMapX, terrainMapY).isBlocked())
 					{
 						listViewUnit.getSelectionModel().clearSelection();
 						listViewUnitItems.remove(listViewSelectedUnit);
 
 						// TODO 3): Set the Starting Location of the Unit. Also render it and its Unit Text onto canvasGameStart.
-						
+						selectedUnit.setStartingLocation(terrainMapX, terrainMapY);
+						renderUnit(canvasGameStart, selectedUnit);
+						renderUnitText(canvasGameStart, selectedUnit);
 					} 
 					
 					else 
 					{
 						// TODO 4): Otherwise, showErrorDialog() that "Target Location is blocked."
-						
+						showErrorDialog("Target Location is blocked.");
 						return;
 					}
 				}
@@ -368,7 +538,9 @@ public class GameApplication extends Application
 	// There are 3 Buttons in scene "Welcome".
 	private void initWelcomeSceneHandler() 
 	{
-
+		btNewGame.setOnAction(e -> handleNewGame());
+		btQuit.setOnAction(e -> handleExitGame());
+		btBackgroundMusic.setOnAction(e-> handleBackgroundMusic());
 	}
 
 	private void initStartGameSceneHandler() 
@@ -388,16 +560,20 @@ public class GameApplication extends Application
 		// TODO: Connect the handle___() methods to "Load Terrain Map", "Load Players and Units", and "Start Game" Buttons.
 		// Also connect the handle___() method to canvasGameStart, which places Units onto the Terrain Map when the User Mouse-Clicks.
 		// "Quit to Menu" Button handle___() method as well as canvasGameStart.setOnMouseMoved() has already been setup as a code reference.
-
+		btStartGame.setOnAction(e-> handleGameStartButton());
+		btLoadPlayersAndUnits.setOnAction(e->handleLoadPlayersAndUnits());
+		btLoadTerrainMap.setOnAction(e->handleLoadMap());
 		
 		canvasGameStart.setOnMouseMoved(e -> handleCanvasGameStartMouseMovement(e.getX(), e.getY()));
-			
+		canvasGameStart.setOnMouseClicked(e -> handleCanvasGameStartMouseClick(e.getX(), e.getY()));
+
 		btQuitToMenu.setOnAction(e ->
 		{
 			gameEngine.unloadPlayersAndUnits();
 			gameMap.unloadTerrainMap();
 			clearLayer(canvasGameStart);
 			lbMapPosition.setText("");
+			listViewUnitItems.clear();
 			putSceneOnStage(SCENE_WELCOME);
 		});
 		// ===================================================
@@ -408,6 +584,12 @@ public class GameApplication extends Application
 	// Remember to call stopGamePlay() when clicked on "Quit To Menu" Button before going back to scene "Welcome".
 	private void initGamePlaySceneHandler()
 	{
+		canvasGamePlayLayers[TOP_LAYER].setOnMouseClicked(e-> handleCanvasGamePlayMouseClick(e.getX(), e.getY()));
+		btGamePlayQuitToMenu.setOnAction(e ->
+		{
+			stopGamePlay();
+			putSceneOnStage(SCENE_WELCOME);
+		});
 
 	}
 	
@@ -415,7 +597,11 @@ public class GameApplication extends Application
 	// There are 2 Buttons, "Exit to Menu" and "Quit Game".
 	private void initGameOverHandler()
 	{
-
+		btExitToMenu.setOnAction(e ->
+		{
+			putSceneOnStage(SCENE_WELCOME);
+		});
+		btGameOverQuitGame.setOnAction(e->handleExitGame());
 	}
 
 	
@@ -543,21 +729,29 @@ public class GameApplication extends Application
 	// You may call renderImageTile().
 	private void renderTerrainTile(Canvas layer, Terrain terrain, int terrainMapX, int terrainMapY)
 	{
-
+		renderImageTile(layer, terrain.getImage(), terrainMapX, terrainMapY);
 	}
 	
 	// TODO: Render the whole Terrain Map onto the given canvas layer.
 	// You may call renderTerrainTile().
 	private void renderTerrainMap(Canvas layer)
 	{
-
+		clearLayer(layer);
+		layer.setHeight(gameMap.getHeight()*TILE_HEIGHT);
+		layer.setWidth(gameMap.getWidth()*TILE_WIDTH);
+		for(int i = 0; i<gameMap.getHeight(); i++) {
+			for (int j = 0; j<gameMap.getWidth(); j++) {
+				Terrain terrain = gameMap.getTerrainAtLocation(j, i);
+				renderTerrainTile(layer, terrain, j, i);
+			}
+		}
 	}
 	
 	// TODO: Render the Unit onto the given canvas layer. Hint: Unit keeps track of its location.
 	// You may call renderImageTile().
 	private void renderUnit(Canvas layer, Unit unit)
 	{
-
+		renderImageTile(layer, unit.getImage(), unit.getLocationX(), unit.getLocationY());
 	}
 	
 	// TODO: Render the Unit ID of the given Unit onto the given canvas layer.
@@ -566,7 +760,8 @@ public class GameApplication extends Application
 	// Add UNIT_TEXT_WIDTH_OFFSET and UNIT_TEXT_HEIGHT_OFFSET to render the text at bottom-right corner of the Unit.
 	private void renderUnitText(Canvas layer, Unit unit)
 	{
-
+		layer.getGraphicsContext2D().setStroke(unit.isReady() ? UNIT_READY_TEXT_COLOR : UNIT_DONE_TEXT_COLOR);
+		layer.getGraphicsContext2D().strokeText(Character.toString(unit.getId()),unit.getLocationX()*TILE_WIDTH + UNIT_TEXT_WIDTH_OFFSET, unit.getLocationY()*TILE_HEIGHT + UNIT_TEXT_HEIGHT_OFFSET);
 	}
 	
 	// TODO: Render the Movement Range and Attack Range Indicator Tiles.
@@ -581,6 +776,52 @@ public class GameApplication extends Application
 	// Hint: renderColor has getRed(), getGreen(), getBlue() methods.
 	private void renderRangeIndicator(Canvas layer, Unit unit, boolean[][] rangeMap, Color renderColor)
 	{
+		clearLayer(layer);
+		if(renderColor == MOVEMENT_RANGE_INDICATOR_COLOR) {
+			for(int i = 0; i < rangeMap.length; i++) {
+				for(int j = 0; j < rangeMap[i].length; j++) {
+					if(rangeMap[i][j]) {
+						layer.getGraphicsContext2D().setFill(new Color(renderColor.getRed(), renderColor.getGreen(), renderColor.getBlue(), 0.5));
+						layer.getGraphicsContext2D().setStroke(renderColor);
+						layer.getGraphicsContext2D().fillRect(gameMap.terrainMapToCanvasX(unit.movementMapToTerrainMapX(j)), gameMap.terrainMapToCanvasY(unit.movementMapToTerrainMapY(i)), TILE_WIDTH, TILE_HEIGHT);
+						layer.getGraphicsContext2D().strokeRect(gameMap.terrainMapToCanvasX(unit.movementMapToTerrainMapX(j)), gameMap.terrainMapToCanvasY(unit.movementMapToTerrainMapY(i)), TILE_WIDTH, TILE_HEIGHT);
+					}
+				}
+			}
+		}
+		else if(renderColor == ATTACK_RANGE_INDICATOR_COLOR) {
+			for(int i = 0; i < rangeMap.length; i++) {
+				for(int j = 0; j < rangeMap[i].length; j++) {
+					if(rangeMap[i][j]) {
+						layer.getGraphicsContext2D().setFill(new Color(renderColor.getRed(), renderColor.getGreen(), renderColor.getBlue(), 0.5));
+						layer.getGraphicsContext2D().setStroke(renderColor);
+						layer.getGraphicsContext2D().fillRect(gameMap.terrainMapToCanvasX(unit.attackMapToTerrainMapX(j)), gameMap.terrainMapToCanvasY(unit.attackMapToTerrainMapY(i)), TILE_WIDTH, TILE_HEIGHT);
+						layer.getGraphicsContext2D().strokeRect(gameMap.terrainMapToCanvasX(unit.attackMapToTerrainMapX(j)), gameMap.terrainMapToCanvasY(unit.attackMapToTerrainMapY(i)), TILE_WIDTH, TILE_HEIGHT);
+					}
+				}
+			}
+		}
+
+
+
+//		if(renderColor == MOVEMENT_RANGE_INDICATOR_COLOR) {
+//			unit.movementMapToTerrainMapX();
+//		}
+
+//		System.out.println(gameMap.getHeight());
+//		System.out.println(gameMap.getWidth());
+//		for(int i = 0; i<gameMap.getHeight(); i++) {
+//			for (int j = 0; j<gameMap.getWidth(); j++) {
+//				System.out.println("(" + j + ", " + i + ")");
+//
+//				if(rangeMap[i][j] == true) {
+//					layer.getGraphicsContext2D().setFill(new Color(renderColor.getRed(), renderColor.getGreen(), renderColor.getBlue(), 0.5));
+//					layer.getGraphicsContext2D().setStroke(renderColor);
+//					layer.getGraphicsContext2D().fillRect(gameMap.terrainMapToCanvasX(j), gameMap.terrainMapToCanvasY(i), TILE_WIDTH, TILE_HEIGHT);
+//					layer.getGraphicsContext2D().strokeRect(gameMap.terrainMapToCanvasX(j), gameMap.terrainMapToCanvasY(i), TILE_WIDTH, TILE_HEIGHT);
+//				}
+//			}
+//		}
 
 	}
 	
@@ -589,7 +830,21 @@ public class GameApplication extends Application
 	// Remember to render to the correct layer in canvasGamePlayLayers.
 	private void renderInitGamePlayCanvas() 
 	{
-
+		renderTerrainMap(canvasGamePlayLayers[TERRAIN_LAYER]);
+		animateWaterTiles(canvasGamePlayLayers[TERRAIN_LAYER]);
+		for(int i = 1; i<NUM_LAYERS; i++) {
+			clearLayer(canvasGamePlayLayers[i]);
+			canvasGamePlayLayers[i].setHeight(gameMap.getHeight()*TILE_HEIGHT);
+			canvasGamePlayLayers[i].setWidth(gameMap.getWidth()*TILE_WIDTH);
+		}
+		for (Player player:gameEngine.getPlayers())
+		{
+			for (Unit unit:player.getUnits())
+			{
+				renderUnit(canvasGamePlayLayers[UNIT_LAYER], unit);
+				renderUnitText(canvasGamePlayLayers[TEXT_LAYER], unit);
+			}
+		}
 	}
 	
 	// TODO: Create a new Thread for each Water Tile to manage the Water Animations.
@@ -619,7 +874,39 @@ public class GameApplication extends Application
 	// }
 	private void animateWaterTiles(Canvas layer)
 	{
+		for(int y = 0; y<gameMap.getHeight(); y++) {
+			for (int x = 0; x<gameMap.getWidth(); x++) {
+				final int TERRAIN_MAP_X = x;
+				final int TERRAIN_MAP_Y = y;
+				Terrain terrain = gameMap.getTerrainAtLocation(x, y);
+				if(terrain instanceof Water) {
+					Thread waterAnimThread = new Thread(new Runnable() {
+						private final int LOCATION_X = TERRAIN_MAP_X;
+						private final int LOCATION_Y = TERRAIN_MAP_Y;
+						@Override
+						public void run() {
+							int i = 0;
+							while(true) {
+								i = (i+1)%4;
+								Image image = ((Water) terrain).getAnimFrame(i);
+								Platform.runLater(() -> {
+									renderImageTile(layer,image , LOCATION_X, LOCATION_Y);
+								});
 
+								try {
+									Thread.sleep(((Water) terrain).ANIM_TIME_PER_FRAME);
+								}
+								catch (InterruptedException e) {
+									break;
+								}
+							}
+						}
+					});
+					waterAnimThread.start();
+					animThreads.add(waterAnimThread);
+				}
+			}
+		}
 	}
 	
 	
@@ -654,9 +941,10 @@ public class GameApplication extends Application
 		{
 			int attackMapX = gamePlaySelectedUnit.terrainMapToAttackMapX(terrainMapX);
 			int attackMapY = gamePlaySelectedUnit.terrainMapToAttackMapY(terrainMapY);
+			boolean[][] attackMap = gamePlaySelectedUnit.getAttackMap();
 			
 			// If user clicked an invalid Attack Target, skip this part and assume just End Turn without Attacking.
-			if (gamePlaySelectedUnit.getAttackMap()[attackMapY][attackMapX] == true)
+			if ((((attackMapX >= 0) && (attackMapY >= 0)) && ((attackMapX < attackMap.length) && (attackMapY < attackMap.length))) && (attackMap[attackMapY][attackMapX] == true))
 			{
 				Terrain targetTile = gameMap.getTerrainAtLocation(terrainMapX, terrainMapY);
 				
@@ -702,11 +990,13 @@ public class GameApplication extends Application
 		{			
 			int movementMapX = gamePlaySelectedUnit.terrainMapToMovementMapX(terrainMapX);
 			int movementMapY = gamePlaySelectedUnit.terrainMapToMovementMapY(terrainMapY);
-			
-			if (gamePlaySelectedUnit.getMovementMap()[movementMapY][movementMapX] == true)
+			boolean[][] movementMap = gamePlaySelectedUnit.getMovementMap();
+
+			if ((((movementMapX >= 0) && (movementMapY >= 0)) && ((movementMapX < movementMap.length) && (movementMapY < movementMap.length))) && (movementMap[movementMapY][movementMapX] == true))
 			{
 				int unitPreviousLocationX = gamePlaySelectedUnit.getLocationX();
 				int unitPreviousLocationY = gamePlaySelectedUnit.getLocationY();
+
 				
 				gamePlaySelectedUnit.move(terrainMapX, terrainMapY);
 				

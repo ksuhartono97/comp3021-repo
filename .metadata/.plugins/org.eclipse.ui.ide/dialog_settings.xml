@@ -5,11 +5,16 @@
 		<item value="false" key="WizardProjectsImportPage.STORE_COPY_PROJECT_ID"/>
 		<item value="false" key="WizardProjectsImportPage.STORE_ARCHIVE_SELECTED"/>
 		<list key="WizardProjectsImportPage.STORE_DIRECTORIES">
+			<item value="/Users/kristiansuhartono/Documents/GitHub/comp3021-repo/WarfareGameGUIPA2"/>
 			<item value="/Users/kristiansuhartono/Documents/GitHub/comp3021-repo/comp3021_lab11"/>
 			<item value="/Users/kristiansuhartono/Documents/GitHub/comp3021-repo/WarfareGameConsolePA1"/>
 		</list>
 		<list key="WizardProjectsImportPage.STORE_ARCHIVES">
 			<item value=""/>
 		</list>
+	</section>
+	<section name="NewWizardAction">
+	</section>
+	<section name="BasicNewProjectResourceWizard">
 	</section>
 </section>

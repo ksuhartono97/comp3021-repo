@@ -15,8 +15,8 @@
       <file leaf-file-name="GameApplication.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/GameApplication.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="216">
-              <caret line="437" column="37" lean-forward="false" selection-start-line="437" selection-start-column="32" selection-end-line="437" selection-end-column="37" />
+            <state relative-caret-position="526">
+              <caret line="364" column="13" lean-forward="true" selection-start-line="372" selection-start-column="17" selection-end-line="372" selection-end-column="30" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -61,6 +61,10 @@
       <find>render</find>
       <find>image</find>
       <find>Image</find>
+      <find>canvas</find>
+      <find>handleExit</find>
+      <find>handleExitGame</find>
+      <find>handleLoadMap</find>
     </findStrings>
   </component>
   <component name="GradleLocalSettings">
@@ -74,8 +78,8 @@
         <option value="$PROJECT_DIR$/src/PlayersAndUnits.txt" />
         <option value="$PROJECT_DIR$/src/GameMap.txt" />
         <option value="$PROJECT_DIR$/src/pa1/GameEngine.java" />
-        <option value="$PROJECT_DIR$/src/GameApplication.java" />
         <option value="$PROJECT_DIR$/src/pa1/GameMap.java" />
+        <option value="$PROJECT_DIR$/src/GameApplication.java" />
       </list>
     </option>
   </component>
@@ -104,10 +108,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="AndroidView" />
-      <pane id="PackagesPane" />
-      <pane id="Scratches" />
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -124,6 +124,10 @@
           <select />
         </subPane>
       </pane>
+      <pane id="PackagesPane" />
+      <pane id="AndroidView" />
+      <pane id="Scratches" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -261,11 +265,13 @@
       <workItem from="1511329330384" duration="580000" />
       <workItem from="1511332891624" duration="316000" />
       <workItem from="1511335083549" duration="248000" />
+      <workItem from="1511932294489" duration="2546000" />
+      <workItem from="1512027285811" duration="1556000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="8419000" />
+    <option name="totallyTimeSpent" value="12521000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1280" height="800" extended-state="6" />
@@ -313,6 +319,48 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/src/GameApplication.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/pa1/GameEngine.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="32">
+          <caret line="2" column="2" lean-forward="false" selection-start-line="2" selection-start-column="2" selection-end-line="2" selection-end-column="2" />
+          <folding>
+            <element signature="e#338#339#0" expanded="true" />
+            <element signature="e#359#360#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/GameApplication.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/pa1/GameEngine.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="32">
+          <caret line="2" column="2" lean-forward="false" selection-start-line="2" selection-start-column="2" selection-end-line="2" selection-end-column="2" />
+          <folding>
+            <element signature="e#338#339#0" expanded="true" />
+            <element signature="e#359#360#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/GameApplication.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -490,8 +538,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/GameApplication.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="216">
-          <caret line="437" column="37" lean-forward="false" selection-start-line="437" selection-start-column="32" selection-end-line="437" selection-end-column="37" />
+        <state relative-caret-position="526">
+          <caret line="364" column="13" lean-forward="true" selection-start-line="372" selection-start-column="17" selection-end-line="372" selection-end-column="30" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
